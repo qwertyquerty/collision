@@ -21,8 +21,8 @@ def point_in_circle(p, c):
 
     return distance_sq <= radius_sq
 
-def point_in_polygon(p, poly):
-    TEST_POINT.pos = p.copy()
+def point_in_poly(p, poly):
+    TEST_POINT.pos.set(p)
     RESPONSE.clear()
 
     result = test_poly_poly(TEST_POINT, poly, RESPONSE)
@@ -50,8 +50,12 @@ def test_circle_circle(a, b, response = None):
         response.a = a
         response.b = b
         response.overlap = total_radius - dist
-        response.overlap_n = difference_v.normalize()
-        response.overlap_v = difference_v * response.overlap
+        if difference_v.ln2() != 0:
+            response.overlap_n = difference_v.normalize()
+            response.overlap_v = difference_v * response.overlap
+        else:
+            response.overlap_n = vec(0,1)
+            response.overlap_v = vec(0,response.overlap)
         response.a_in_b = a.radius <= b.radius and dist <= b.radius - a.radius
         response.b_in_a = b.radius <= a.radius and dist <= a.radius - b.radius
 
@@ -80,7 +84,7 @@ def test_poly_circle(polygon, circle, response = None):
         region = voronoi_region(edge,point)
 
         if region == LEFT_VORONOI_REGION:
-            edge = polygon.edges[prev].copy()
+            edge.set(polygon.edges[prev])
 
             point2 = circle_pos - points[prev]
 
@@ -100,8 +104,7 @@ def test_poly_circle(polygon, circle, response = None):
 
 
         elif region == RIGHT_VORONOI_REGION:
-
-            edge = polygon.edges[next].copy()
+            edge.set(polygon.edges[next])
             point = circle_pos - points[next]
             region = voronoi_region(edge,point)
 
@@ -138,12 +141,12 @@ def test_poly_circle(polygon, circle, response = None):
 
         if overlap_n and response and abs(overlap) < abs(response.overlap):
             response.overlap = overlap
-            response.overlap_n = overlap_n.copy()
+            response.overlap_n.set(overlap_n)
 
     if response:
         response.a = polygon
         response.b = circle
-        reponse.overlap_v = response.overlap_n * response.overlap
+        response.overlap_v = response.overlap_n * response.overlap
 
     return True
 
@@ -165,18 +168,16 @@ def test_circle_poly(circle,polgon,response=None):
     return result
 
 def test_poly_poly(a, b, response=None):
-    a_points = a.points.copy()
-    a_len = len(a_points)
+    a_points = a.points
+    b_points = b.points
 
-    b_points = b.points.copy()
-    b_len = len(b_points)
 
-    for i in range(a_len):
-        if is_separating_axis(a.pos, b.pos, a_points, b_points, a.normals[i], response):
+    for n in a.normals:
+        if is_separating_axis(a.pos, b.pos, a_points, b_points, n, response):
             return False
 
-    for i in range(b_len):
-        if is_separating_axis(a.pos, b.pos, a_points, b_points, b.normals[i], response):
+    for n in b.normals:
+        if is_separating_axis(a.pos, b.pos, a_points, b_points, n, response):
             return False
 
     if response:
@@ -187,7 +188,7 @@ def test_poly_poly(a, b, response=None):
     return True
 
 
-def test(a,b, response = None):
+def collide(a,b, response = None):
     if isinstance(a,Box): a = a.to_poly()
     if isinstance(b,Box): b = b.to_poly()
     if isinstance(a,Poly) and isinstance(b,Poly):

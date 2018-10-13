@@ -18,8 +18,6 @@ class vec():
 
         return vec(self.x+other.x, self.y+other.y)
 
-        return self.t_vec.copy()
-
     def __mul__(self, other):
         if isinstance(other, int) or isinstance(other,float):
             return vec(self.x*other, self.y*other)
@@ -77,14 +75,12 @@ class vec():
     def __str__(self):
         return "vec [{x}, {y}]".format(x=self.x, y=self.y)
 
-    def distance_to(self, other):
-        return math.sqrt((self.x - other.x)**2 + (self.y - other.y)**2)
-
-    def angle_to(self, other):
-        return math.atan2(other.y-self.y,other.x-self.x)
-
     def copy(self):
         return vec(self.x,self.y)
+
+    def set(self, other):
+        self.x = other.x
+        self.y = other.y
 
     def perp(self):
         return vec(self.y, -self.x)
@@ -97,8 +93,7 @@ class vec():
 
     def normalize(self):
         d = self.ln()
-
-        return vec(self.x / d, self.y / d)
+        return self/d
 
     def project(self,other):
         amt = self.dot(other) / other.ln2()
@@ -123,8 +118,7 @@ class vec():
         v = v.project_n(axis) * 2
         v = -v
 
-
-        return self.t_vec.copy()
+        return v
 
     def dot(self,other):
         return self.x * other.x + self.y * other.y
@@ -143,13 +137,13 @@ def flatten_points_on(points, normal, result):
         if dot < min: min = dot
         if dot > max: max = dot
 
-    result.append(min)
-    result.append(max)
+    result[0] = min
+    result[1] = max
 
 
 def is_separating_axis(a_pos,b_pos,a_points,b_points,axis,response = None):
-    range_a = []
-    range_b = []
+    range_a = [0,0]
+    range_b = [0,0]
 
     offset_v = b_pos-a_pos
 
@@ -161,7 +155,7 @@ def is_separating_axis(a_pos,b_pos,a_points,b_points,axis,response = None):
     range_b[0] += projected_offset
     range_b[1] += projected_offset
 
-    if (range_a[0] > range_b[1]) or (range_b[0] > range_a[1]):
+    if range_a[0] > range_b[1] or range_b[0] > range_a[1]:
         return True
 
     if response:
@@ -195,18 +189,17 @@ def is_separating_axis(a_pos,b_pos,a_points,b_points,axis,response = None):
         abs_overlap = abs(overlap)
         if abs_overlap < response.overlap:
             response.overlap = abs_overlap
-            response.overlap_n = axis.copy()
+            response.overlap_n.set(axis)
             if overlap < 0:
-                response.overlap_n.reverse()
+                response.overlap_n = response.overlap_n.reverse()
 
     return False
 
 def voronoi_region(line,point):
-    ln2 = line.ln2()
     dp = point.dot(line)
 
     if dp < 0:
         return LEFT_VORONOI_REGION
-    elif dp > ln2:
+    elif dp > line.ln2():
         return RIGHT_VORONOI_REGION
     return MIDDLE_VORONOI_REGION

@@ -14,7 +14,7 @@ from .tests import *
 
 
 
-__title__ = 'py-sat'
+__title__ = 'collision'
 __author__ = 'qwertyquerty'
 __copyright__ = 'Copyright 2018 qwertyquerty'
 __license__ = 'MIT'

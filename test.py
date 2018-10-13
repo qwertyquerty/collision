@@ -1,18 +1,18 @@
-from pySAT import Circle, Box, Poly, vec, Response
-import pySAT
+from collision import Circle, Box, Poly, vec, Response, collide
+import collision
 
 import time
 
-a = Poly(vec(0,0), [vec(-10,0),vec(10,0),vec(5,15)])
+a = Box(vec(-2,-2), 4,4).to_poly()
 
-b = Poly(vec(0,0), [vec(-8,0),vec(8,0),vec(5,5)])
+b = Box(vec(-2,-1), 4, 4).to_poly()
 
 r = Response()
 
 
 
 
-c =  pySAT.test(a, b, r)
+c =  collide(a, b, r)
 
 print("COLLIDED:",c,f"\n{r}")
 
@@ -22,8 +22,8 @@ st = time.time()
 
 
 for i in range(n):
-    c =  pySAT.test(a, b, r)
-    a.angle += 1
+    c = collide(a, b, r)
+
 
 et = time.time()
 

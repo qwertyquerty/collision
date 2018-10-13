@@ -53,7 +53,7 @@ class Poly():
         l = range(len(self.base_points))
 
         for i in l:
-            self.points[i] = self.base_points[i].copy()
+            self.points[i].set(self.base_points[i])
             if self.angle != 0:
                 self.points[i] = self.points[i].rotate(self.angle)
 
