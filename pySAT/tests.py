@@ -15,7 +15,7 @@ TEST_POINT = Box(vec(0,0), 0.000001, 0.000001).to_poly()
 def point_in_circle(p, c):
     difference_v = p - c.pos
 
-    radius_sq = c.r * c.r
+    radius_sq = c.radius * c.radius
 
     distance_sq = difference_v.ln2()
 
@@ -36,7 +36,7 @@ def test_circle_circle(a, b, response = None):
 
     difference_v = b.pos - a.pos
 
-    total_radius = a.r + b.r
+    total_radius = a.radius + b.radius
 
     total_radius_sq = total_radius * total_radius
 
@@ -52,14 +52,14 @@ def test_circle_circle(a, b, response = None):
         response.overlap = total_radius - dist
         response.overlap_n = difference_v.normalize()
         response.overlap_v = difference_v * response.overlap
-        response.a_in_b = a.r <= b.r and dist <= b.r - a.r
-        response.b_in_a = b.r <= a.r and dist <= a.r - b.r
+        response.a_in_b = a.radius <= b.radius and dist <= b.radius - a.radius
+        response.b_in_a = b.radius <= a.radius and dist <= a.radius - b.radius
 
     return True
 
 def test_poly_circle(polygon, circle, response = None):
     circle_pos = circle.pos - polygon.pos
-    radius = circle.r
+    radius = circle.radius
     radius2 = radius * radius
     points = polygon.points
     ln = len(points)
