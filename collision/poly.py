@@ -38,7 +38,7 @@ class Poly():
 
         self.base_points = points
         self._recalc()
-        return self
+
 
     def rotate(self,angle):
         for i in range(len(self.base_points)):
@@ -46,14 +46,14 @@ class Poly():
 
         self._recalc()
 
-        return self
+
 
     def translate(self,v):
         for i in range(len(self.base_points)):
             self.base_points[i] += v
 
         self._recalc()
-        return self
+
 
     def _recalc(self):
         l = range(len(self.base_points))
@@ -71,7 +71,7 @@ class Poly():
 
             self.normals[i] = e.perp().normalize()
 
-        return self
+
 
     def get_aabb(self):
         x_min = self.points[0].x
