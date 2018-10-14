@@ -3,9 +3,9 @@ import collision
 
 import time
 
-a = Poly(vec(0,0), [vec(0,0), vec(0,1), vec(1,2),vec(2,2),vec(2,3), vec(1,3),vec(0,3)])
-
-b = Poly.from_box(vec(0,0), 4,4)
+a = Poly(vec(0,0), [vec(0,0), vec(0,5),vec(5,5)])
+print(a.normals)
+b = Circle(vec(0,11), 5)
 
 r = Response()
 c =  collide(a, b, r)
@@ -18,7 +18,7 @@ st = time.time()
 
 
 for i in range(n):
-    #a.angle += 1
+    a.angle += 1
     c = collide(a, b, r)
 
 

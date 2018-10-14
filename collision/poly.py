@@ -71,6 +71,12 @@ class Poly():
 
             self.normals[i] = e.perp().normalize()
 
+    @property
+    def abs_points(self):
+        l = []
+        for p in self.points:
+            l.append(p+self.pos)
+        return l
 
 
     def get_aabb(self):
