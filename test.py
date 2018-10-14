@@ -1,17 +1,13 @@
-from collision import Circle, Box, Poly, vec, Response, collide
+from collision import Circle, Poly, vec, Response, collide
 import collision
 
 import time
 
-a = Box(vec(-2,-2), 4,4).to_poly()
+a = Poly(vec(0,0), [vec(0,0), vec(0,1), vec(1,2),vec(2,2),vec(2,3), vec(1,3),vec(0,3)])
 
-b = Box(vec(-2,-1), 4, 4).to_poly()
+b = Poly.from_box(vec(0,0), 4,4)
 
 r = Response()
-
-
-
-
 c =  collide(a, b, r)
 
 print("COLLIDED:",c,f"\n{r}")
@@ -22,6 +18,7 @@ st = time.time()
 
 
 for i in range(n):
+    #a.angle += 1
     c = collide(a, b, r)
 
 

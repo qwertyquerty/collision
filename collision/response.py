@@ -1,5 +1,6 @@
 import math
 
+from .util import vec
 
 class Response():
     def __init__(self):
@@ -21,5 +22,3 @@ class Response():
 
     def __repr__(self):
         return self.__str__()
-
-from .util import vec

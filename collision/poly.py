@@ -2,7 +2,6 @@ import math
 
 
 from .util import vec
-from . import box
 
 POLY_RECALC_ATTRS = ["angle"]
 
@@ -11,6 +10,13 @@ class Poly():
         self.__dict__["pos"] = pos
         self.__dict__["angle"] = 0
         self.set_points(points)
+
+    @classmethod
+    def from_box(cls, center, width, height):
+        hw = width / 2
+        hh = height / 2
+        c = cls(center, [vec(-hw, -hh), vec(hw, -hh), vec(hw, hh), vec(-hw, hh)])
+        return c
 
     def __setattr__(self,key,val):
         self.__dict__[key] = val
@@ -79,7 +85,7 @@ class Poly():
             if point.y < y_min: y_min = point.y
             elif point.y > y_max: y_max = point.y
 
-        return box.Box(self.pos+vec(x_min,y_min), x_max- x_min, y_max - y_min).to_poly()
+        return Poly.from_box(vec((x_min+x_max)/2, (y_min+y_max)/2), x_max- x_min, y_max - y_min)
 
     def get_centroid(self):
         cx = 0

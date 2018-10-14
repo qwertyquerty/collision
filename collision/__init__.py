@@ -6,7 +6,6 @@ An implementation of SAT in Python
 
 
 from .util import vec
-from .box import Box
 from .circle import Circle
 from .poly import Poly
 from .response import Response

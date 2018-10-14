@@ -1,6 +1,5 @@
 from .util import vec, flatten_points_on, voronoi_region, is_separating_axis
 from .poly import Poly
-from .box import Box
 from .circle import Circle
 from .response import Response
 
@@ -10,7 +9,7 @@ LEFT_VORONOI_REGION = -1
 MIDDLE_VORONOI_REGION = 0
 RIGHT_VORONOI_REGION  = 1
 RESPONSE = Response()
-TEST_POINT = Box(vec(0,0), 0.000001, 0.000001).to_poly()
+TEST_POINT = Poly.from_box(vec(0,0), 0.0000001, 0.0000001)
 
 def point_in_circle(p, c):
     difference_v = p - c.pos
@@ -189,8 +188,6 @@ def test_poly_poly(a, b, response=None):
 
 
 def collide(a,b, response = None):
-    if isinstance(a,Box): a = a.to_poly()
-    if isinstance(b,Box): b = b.to_poly()
     if isinstance(a,Poly) and isinstance(b,Poly):
         return test_poly_poly(a, b, response)
     elif isinstance(a,Circle) and isinstance(b,Circle):

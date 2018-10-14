@@ -1,6 +1,6 @@
 import math
 
-from . import box
+from . import poly
 from .util import vec
 
 
@@ -13,8 +13,7 @@ class Circle():
 
     def get_aabb(self):
         r = self.radius
-        corner = this.pos - vec(r,r)
-        return box.Box(corner, r*2, r*2).to_poly()
+        return poly.Poly.from_box(this.pos, r*2, r*2)
 
     def __str__(self):
         r = "Circle [\n\tradius = {}\n\tpos = {}\n]".format(self.radius, self.pos)
