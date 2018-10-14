@@ -14,7 +14,6 @@ c = Circle(vec(250,450), 20)
 
 clock = pg.time.Clock()
 
-pg.time.wait(2000)
 
 while 1:
     for event in pg.event.get():

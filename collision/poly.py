@@ -112,8 +112,8 @@ class Poly():
         return vec(cx,cy)
 
     def __str__(self):
-        r = "Poly [\n\tpoints = [\n"
-        for p in self.points:
+        r = "Poly [\n\tabs_points = [\n"
+        for p in self.abs_points:
             r+= "\t\t{}\n".format(str(p))
         r += "\t]\n"
         r += "\tpos = {}\n\tangle = {}\n".format(self.pos, self.angle)
