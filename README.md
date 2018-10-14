@@ -1,6 +1,6 @@
 # collision.py
 
-- [Classes](#vec)
+- [Classes](#classes)
 - [Collisions](#colissions)
 - [Examples](#examples)
 
@@ -97,7 +97,7 @@ Returns the length of the vector
 
 Returns the squared length of the vector
 
-
+------
 
 ### ***class*** `collision.Circle(pos, radius)`
 
@@ -113,6 +113,8 @@ A simple circle with a position and radius
 ##### *func* `get_aabb()` &rarr; `collision.Poly`
 
 Returns the AABB bounding box of the circle
+
+------
 
 ### ***class*** `collision.Poly(pos, points)`
 
@@ -162,7 +164,7 @@ Translate all of the base points relative to the origin (position) of the polygo
 Get the centroid of the polygon. The arithmatic mean of all of the points.
 
 
-
+------
 
 ### ***class*** `collision.Response()`
 
