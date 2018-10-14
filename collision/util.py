@@ -6,7 +6,6 @@ MIDDLE_VORONOI_REGION = 0
 RIGHT_VORONOI_REGION  = 1
 
 
-
 class vec():
     def __init__(self, x, y):
         self.x = x
@@ -52,12 +51,12 @@ class vec():
         return vec(self.x%other.x,self.y%other.y)
 
     def __eq__(self, other):
-        if type(other) != v:
+        if type(other) != vec:
             return False
         return self.x == other.x and self.y == other.y
 
     def __ne__(self, other):
-        if type(other) != v:
+        if type(other) != vec:
             return True
         return self.x != other.x or self.y != other.y
 

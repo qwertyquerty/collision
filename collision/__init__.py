@@ -7,9 +7,10 @@ An implementation of SAT in Python
 
 from .util import vec
 from .circle import Circle
-from .poly import Poly
+from .poly import Poly, Concave_Poly
 from .response import Response
 from .tests import *
+from .tripy import *
 
 
 
