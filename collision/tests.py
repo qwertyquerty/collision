@@ -9,7 +9,7 @@ LEFT_VORONOI_REGION = -1
 MIDDLE_VORONOI_REGION = 0
 RIGHT_VORONOI_REGION  = 1
 RESPONSE = Response()
-TEST_POINT = Poly.from_box(vec(0,0), 0.0000001, 0.0000001)
+TEST_POINT = Poly(vec(0,0), [vec(0,0),vec(0.0000001,0.0000001)])
 
 def point_in_circle(p, c):
     difference_v = p - c.pos
@@ -22,7 +22,7 @@ def point_in_circle(p, c):
 
 def point_in_poly(p, poly):
     TEST_POINT.pos.set(p)
-    RESPONSE.clear()
+    RESPONSE.reset()
 
     result = test_poly_poly(TEST_POINT, poly, RESPONSE)
 
@@ -66,7 +66,7 @@ def test_poly_circle(polygon, circle, response = None):
     circle_pos = circle.pos - polygon.pos
     radius = circle.radius
     radius2 = radius * radius
-    points = polygon.points
+    points = polygon.rel_points
     ln = len(points)
 
     for i in range(ln):
@@ -169,8 +169,8 @@ def test_circle_poly(circle,polygon,response=None):
     return result
 
 def test_poly_poly(a, b, response=None):
-    a_points = a.points
-    b_points = b.points
+    a_points = a.rel_points
+    b_points = b.rel_points
     a_pos = a.pos
     b_pos = b.pos
 
@@ -198,9 +198,7 @@ def point_in_concave_poly(p, poly):
 
 
     for tri in poly.tris:
-        p = Poly(poly.pos, tri, angle=poly.angle)
-
-        result = test_poly_poly(TEST_POINT, p)
+        result = test_poly_poly(TEST_POINT, tri)
         if result:
             return result
 
@@ -216,12 +214,12 @@ def test_concave_poly_concave_poly(a, b):
         for b_tri in b.tris:
             test = True
             for n in a_tri.normals:
-                if is_separating_axis(a_pos, b_pos, a_tri.points, b_tri.points, n):
+                if is_separating_axis(a_pos, b_pos, a_tri.rel_points, b_tri.rel_points, n):
                     test = False
 
 
             for n in b_tri.normals:
-                if is_separating_axis(a_pos, b_pos, a_tri.points, b_tri.points, n):
+                if is_separating_axis(a_pos, b_pos, a_tri.rel_points, b_tri.rel_points, n):
                     #print("YIKES 2")
                     test = False
 
@@ -231,18 +229,18 @@ def test_concave_poly_concave_poly(a, b):
     return False
 
 def test_concave_poly_poly(a, b):
-    b_points = b.points
+    b_points = b.rel_points
     a_pos = a.pos
     b_pos = b.pos
 
     for a_tri in a.tris:
         test = True
         for n in a_tri.normals:
-            if is_separating_axis(a_pos, b_pos, a_tri.points, b_points, n):
+            if is_separating_axis(a_pos, b_pos, a_tri.rel_points, b_points, n):
                 test = False
 
         for n in b.normals:
-            if is_separating_axis(a_pos, b_pos, a_tri.points, b_points, n):
+            if is_separating_axis(a_pos, b_pos, a_tri.rel_points, b_points, n):
                 test = False
 
         if test:
@@ -258,7 +256,7 @@ def test_concave_poly_circle(concave_poly, circle):
         circle_pos = circle.pos - polygon.pos
         radius = circle.radius
         radius2 = radius * radius
-        points = polygon.points
+        points = polygon.rel_points
         ln = len(points)
 
         for i in range(ln):

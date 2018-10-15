@@ -4,9 +4,9 @@ from .util import vec
 
 class Response():
     def __init__(self):
-        self.clear()
+        self.reset()
 
-    def clear(self):
+    def reset(self):
         self.a = None
         self.b = None
         self.overlap_n = vec(0,0)

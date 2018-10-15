@@ -11,7 +11,7 @@ class Circle():
         self.pos = pos
         self.radius = r
 
-    def get_aabb(self):
+    def aabb(self):
         r = self.radius
         return poly.Poly.from_box(this.pos, r*2, r*2)
 
