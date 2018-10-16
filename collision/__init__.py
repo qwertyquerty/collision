@@ -1,17 +1,16 @@
 """
-An implementation of SAT in Python
-----------------------------------
-         By: qwertyquerty
+ An implementation of SAT in Python
+------------------------------------
+By: qwertyquerty (and Neko... a bit)
 """
 
 
-from .util import vec
 from .circle import Circle
 from .poly import Poly, Concave_Poly
 from .response import Response
 from .tests import *
 from .tripy import *
-
+from .util import Vector
 
 
 __title__ = 'collision'

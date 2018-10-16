@@ -1,13 +1,13 @@
 import math
 
-
-from .util import vec
+from .util import Vector
 from . import tripy
 
 POLY_RECALC_ATTRS = ["angle"]
 
-class Poly():
-    def __init__(self,pos,points,angle=0):
+
+class Poly:
+    def __init__(self, pos, points, angle=0):
         self.__dict__["pos"] = pos
         self.__dict__["angle"] = angle
         self.set_points(points)
@@ -16,34 +16,31 @@ class Poly():
     def from_box(cls, center, width, height):
         hw = width / 2
         hh = height / 2
-        c = cls(center, [vec(-hw, -hh), vec(hw, -hh), vec(hw, hh), vec(-hw, hh)])
+        c = cls(center, [Vector(-hw, -hh), Vector(hw, -hh), Vector(hw, hh), Vector(-hw, hh)])
         return c
 
-    def __setattr__(self,key,val):
+    def __setattr__(self, key, val):
         self.__dict__[key] = val
         if key in POLY_RECALC_ATTRS:
             self._recalc()
 
-
-    def set_points(self,points):
+    def set_points(self, points):
         if tripy.is_clockwise(points):
             points = points[::-1]
 
-        length_changed = len(self.base_points) != len(points) if hasattr(self,"base_points") else True
+        length_changed = len(self.base_points) != len(points) if hasattr(self, "base_points") else True
         if length_changed:
             self.rel_points = []
             self.edges = []
             self.normals = []
 
             for i in range(len(points)):
-                self.rel_points.append(vec(0,0))
-                self.edges.append(vec(0,0))
-                self.normals.append(vec(0,0))
+                self.rel_points.append(Vector(0, 0))
+                self.edges.append(Vector(0, 0))
+                self.normals.append(Vector(0, 0))
 
         self.base_points = points
         self._recalc()
-
-
 
     def _recalc(self):
         l = range(len(self.base_points))
@@ -63,11 +60,10 @@ class Poly():
 
     @property
     def points(self):
-        l = []
+        templist = []
         for p in self.rel_points:
-            l.append(p+self.pos)
-        return l
-
+            templist.append(p+self.pos)
+        return templist
 
     def aabb(self):
         x_min = self.rel_points[0].x
@@ -76,12 +72,16 @@ class Poly():
         y_max = self.rel_points[0].y
 
         for point in self.rel_points:
-            if point.x < x_min: x_min = point.x
-            elif point.x > x_max: x_max = point.x
-            if point.y < y_min: y_min = point.y
-            elif point.y > y_max: y_max = point.y
+            if point.x < x_min:
+                x_min = point.x
+            elif point.x > x_max:
+                x_max = point.x
+            if point.y < y_min:
+                y_min = point.y
+            elif point.y > y_max:
+                y_max = point.y
 
-        return Poly.from_box(vec((x_min+x_max)/2, (y_min+y_max)/2), x_max- x_min, y_max - y_min)
+        return Poly.from_box(Vector((x_min+x_max)/2, (y_min+y_max)/2), x_max- x_min, y_max - y_min)
 
     def get_centroid(self):
         cx = 0
@@ -89,7 +89,7 @@ class Poly():
         ar = 0
         for i in range(len(self.rel_points)):
             p1 = self.rel_points[i]
-            p2 = self.rel_points[0] if i == len(self.rel_points) -1 else self.rel_points[i+1]
+            p2 = self.rel_points[0] if i == len(self.rel_points) - 1 else self.rel_points[i+1]
             a = p1.x * p2.y - p2.x * p1.y
             cx += (p1.x + p2.x) * a
             cy += (p1.x + p2.y) * a
@@ -99,12 +99,12 @@ class Poly():
         cx = cx / ar
         cy = cy / ar
 
-        return vec(cx,cy)
+        return Vector(cx, cy)
 
     def __str__(self):
         r = "Poly [\n\tpoints = [\n"
         for p in self.points:
-            r+= "\t\t{}\n".format(str(p))
+            r += "\t\t{}\n".format(str(p))
         r += "\t]\n"
         r += "\tpos = {}\n\tangle = {}\n".format(self.pos, self.angle)
         r += "]"
@@ -115,21 +115,19 @@ class Poly():
 
 
 class Concave_Poly():
-    def __init__(self,pos,points,angle=0):
+    def __init__(self, pos, points, angle=0):
         self.__dict__["pos"] = pos
         self.__dict__["angle"] = angle
         self.set_points(points)
 
-
-    def __setattr__(self,key,val):
+    def __setattr__(self, key, val):
         self.__dict__[key] = val
         if key in POLY_RECALC_ATTRS:
             self._recalc()
         elif key == "pos":
             self._update_tris()
 
-
-    def set_points(self,points):
+    def set_points(self, points):
         if tripy.is_clockwise(points):
             points = points[::-1]
 
@@ -141,15 +139,13 @@ class Concave_Poly():
             self.normals = []
 
             for i in range(len(points)):
-                self.rel_points.append(vec(0,0))
-                self.edges.append(vec(0,0))
-                self.normals.append(vec(0,0))
+                self.rel_points.append(Vector(0,0))
+                self.edges.append(Vector(0,0))
+                self.normals.append(Vector(0,0))
 
         self.base_points = points
         self._calculate_tris()
         self._recalc()
-
-
 
     def _recalc(self):
         l = range(len(self.base_points))
@@ -169,7 +165,6 @@ class Concave_Poly():
 
         self._update_tris()
 
-
     def _calculate_tris(self):
         self.tris = [Poly(self.pos, points, self.angle) for points in tripy.earclip(self.base_points)]
 
@@ -180,11 +175,10 @@ class Concave_Poly():
 
     @property
     def points(self):
-        l = []
+        templist = []
         for p in self.rel_points:
-            l.append(p+self.pos)
-        return l
-
+            templist.append(p+self.pos)
+        return templist
 
     def aabb(self):
         x_min = self.rel_points[0].x
@@ -198,7 +192,7 @@ class Concave_Poly():
             if point.y < y_min: y_min = point.y
             elif point.y > y_max: y_max = point.y
 
-        return Poly.from_box(vec((x_min+x_max)/2, (y_min+y_max)/2), x_max- x_min, y_max - y_min)
+        return Poly.from_box(Vector((x_min+x_max)/2, (y_min+y_max)/2), x_max - x_min, y_max - y_min)
 
     def get_centroid(self):
         cx = 0
@@ -206,7 +200,7 @@ class Concave_Poly():
         ar = 0
         for i in range(len(self.rel_points)):
             p1 = self.rel_points[i]
-            p2 = self.rel_points[0] if i == len(self.rel_points) -1 else self.rel_points[i+1]
+            p2 = self.rel_points[0] if i == len(self.rel_points) - 1 else self.rel_points[i+1]
             a = p1.x * p2.y - p2.x * p1.y
             cx += (p1.x + p2.x) * a
             cy += (p1.x + p2.y) * a
@@ -216,8 +210,7 @@ class Concave_Poly():
         cx = cx / ar
         cy = cy / ar
 
-        return vec(cx,cy)
-
+        return Vector(cx, cy)
 
     def __str__(self):
         r = "Concave_Poly [\n\tpoints = [\n"

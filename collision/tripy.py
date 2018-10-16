@@ -1,10 +1,11 @@
-from .util import vec
+from .util import Vector
 
 # This is my edit of the tripy lib. Changed to support my vectors, and some other additions. - qwerty
 
 import math
 TWO_PI = 2 * math.pi
 PI = math.pi
+
 
 def earclip(polygon):
     ear_vertex = []
@@ -32,7 +33,7 @@ def earclip(polygon):
 
         polygon.remove(ear)
         point_count -= 1
-        triangles.append([vec(prev_point.x, prev_point.y), vec(ear.x, ear.y), vec(next_point.x, next_point.y)])
+        triangles.append([Vector(prev_point.x, prev_point.y), Vector(ear.x, ear.y), Vector(next_point.x, next_point.y)])
         if point_count > 3:
             prev_prev_point = polygon[prev_index - 1]
             next_next_index = (i + 1) % point_count
@@ -112,10 +113,10 @@ def is_convex_polygon(polygon):
                 angle += TWO_PI
             elif angle > PI:
                 angle -= TWO_PI
+            orientation = 1.0 if angle > 0.0 else -1.0
             if ndx == 0:
                 if angle == 0.0:
                     return False
-                orientation = 1.0 if angle > 0.0 else -1.0
             else:
                 if orientation * angle <= 0.0:
                     return False

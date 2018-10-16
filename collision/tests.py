@@ -1,15 +1,17 @@
-from .util import vec, flatten_points_on, voronoi_region, is_separating_axis
-from .poly import Poly, Concave_Poly
-from .circle import Circle
-from .response import Response
-
 import math
+
+from .circle import Circle
+from .poly import Poly, Concave_Poly
+from .response import Response
+from .util import Vector, flatten_points_on, voronoi_region, is_separating_axis
+
 
 LEFT_VORONOI_REGION = -1
 MIDDLE_VORONOI_REGION = 0
-RIGHT_VORONOI_REGION  = 1
+RIGHT_VORONOI_REGION = 1
 RESPONSE = Response()
-TEST_POINT = Poly(vec(0,0), [vec(0,0),vec(0.0000001,0.0000001)])
+TEST_POINT = Poly(Vector(0, 0), [Vector(0, 0), Vector(0.0000001, 0.0000001)])
+
 
 def point_in_circle(p, c):
     difference_v = p - c.pos
@@ -19,6 +21,7 @@ def point_in_circle(p, c):
     distance_sq = difference_v.ln2()
 
     return distance_sq <= radius_sq
+
 
 def point_in_poly(p, poly):
     TEST_POINT.pos.set(p)
@@ -32,15 +35,11 @@ def point_in_poly(p, poly):
     return result
 
 
-
 def test_circle_circle(a, b, response = None):
 
     difference_v = b.pos - a.pos
-
     total_radius = a.radius + b.radius
-
     total_radius_sq = total_radius * total_radius
-
     distance_sq = difference_v.ln2()
 
     if distance_sq > total_radius_sq:
@@ -55,12 +54,13 @@ def test_circle_circle(a, b, response = None):
             response.overlap_n = difference_v.normalize()
             response.overlap_v = response.overlap_n * response.overlap
         else:
-            response.overlap_n = vec(0,1)
-            response.overlap_v = vec(0,response.overlap)
+            response.overlap_n = Vector(0, 1)
+            response.overlap_v = Vector(0, response.overlap)
         response.a_in_b = a.radius <= b.radius and dist <= b.radius - a.radius
         response.b_in_a = b.radius <= a.radius and dist <= a.radius - b.radius
 
     return True
+
 
 def test_poly_circle(polygon, circle, response = None):
     circle_pos = circle.pos - polygon.pos
@@ -70,8 +70,8 @@ def test_poly_circle(polygon, circle, response = None):
     ln = len(points)
 
     for i in range(ln):
-        next = 0 if i == ln - 1 else i + 1
-        prev = ln - 1 if i == 0 else i - 1
+        nextn = 0 if i == ln - 1 else i + 1
+        prevn = ln - 1 if i == 0 else i - 1
 
         overlap = 0
         overlap_n = None
@@ -85,9 +85,9 @@ def test_poly_circle(polygon, circle, response = None):
         region = voronoi_region(edge,point)
 
         if region == LEFT_VORONOI_REGION:
-            edge.set(polygon.edges[prev])
+            edge.set(polygon.edges[prevn])
 
-            point2 = circle_pos - points[prev]
+            point2 = circle_pos - points[prevn]
 
             region = voronoi_region(edge, point2)
 
@@ -103,10 +103,9 @@ def test_poly_circle(polygon, circle, response = None):
                     overlap_n = point.normalize()
                     overlap = radius - dist
 
-
         elif region == RIGHT_VORONOI_REGION:
-            edge.set(polygon.edges[next])
-            point = circle_pos - points[next]
+            edge.set(polygon.edges[nextn])
+            point = circle_pos - points[nextn]
             region = voronoi_region(edge,point)
 
             if region == LEFT_VORONOI_REGION:
@@ -124,14 +123,12 @@ def test_poly_circle(polygon, circle, response = None):
 
             normal = edge.perp().normalize()
 
-
             dist = point.dot(normal)
 
             dist_abs = abs(dist)
 
             if dist > 0 and dist_abs > radius:
                 return False
-
 
             elif response:
                 overlap_n = normal
@@ -151,6 +148,7 @@ def test_poly_circle(polygon, circle, response = None):
 
     return True
 
+
 def test_circle_poly(circle,polygon,response=None):
     result = test_poly_circle(polygon, circle, response)
 
@@ -167,6 +165,7 @@ def test_circle_poly(circle,polygon,response=None):
         response = None
 
     return result
+
 
 def test_poly_poly(a, b, response=None):
     a_points = a.rel_points
@@ -190,12 +189,8 @@ def test_poly_poly(a, b, response=None):
     return True
 
 
-
-
-
 def point_in_concave_poly(p, poly):
     TEST_POINT.pos.set(p)
-
 
     for tri in poly.tris:
         result = test_poly_poly(TEST_POINT, tri)
@@ -203,7 +198,6 @@ def point_in_concave_poly(p, poly):
             return result
 
     return result
-
 
 
 def test_concave_poly_concave_poly(a, b):
@@ -217,7 +211,6 @@ def test_concave_poly_concave_poly(a, b):
                 if is_separating_axis(a_pos, b_pos, a_tri.rel_points, b_tri.rel_points, n):
                     test = False
 
-
             for n in b_tri.normals:
                 if is_separating_axis(a_pos, b_pos, a_tri.rel_points, b_tri.rel_points, n):
                     #print("YIKES 2")
@@ -227,6 +220,7 @@ def test_concave_poly_concave_poly(a, b):
                 return True
 
     return False
+
 
 def test_concave_poly_poly(a, b):
     b_points = b.rel_points
@@ -247,7 +241,6 @@ def test_concave_poly_poly(a, b):
             return True
 
     return False
-
 
 
 def test_concave_poly_circle(concave_poly, circle):
@@ -279,7 +272,6 @@ def test_concave_poly_circle(concave_poly, circle):
                     if dist > radius:
                         test = False
 
-
             elif region == RIGHT_VORONOI_REGION:
                 edge.set(polygon.edges[next])
                 point = circle_pos - points[next]
@@ -290,7 +282,6 @@ def test_concave_poly_circle(concave_poly, circle):
                     if dist > radius:
                         test = False
 
-
             else:
                 normal = edge.perp().normalize()
                 dist = point.dot(normal)
@@ -299,31 +290,30 @@ def test_concave_poly_circle(concave_poly, circle):
                 if dist > 0 and dist_abs > radius:
                     test = False
 
-
         if test:
             return True
 
     return False
 
 
-def collide(a,b, response = None):
-    if isinstance(a,Poly) and isinstance(b,Poly):
+def collide(a, b, response=None):
+    if isinstance(a, Poly) and isinstance(b, Poly):
         return test_poly_poly(a, b, response)
-    elif isinstance(a,Circle) and isinstance(b,Circle):
+    elif isinstance(a, Circle) and isinstance(b, Circle):
         return test_circle_circle(a, b, response)
-    elif isinstance(a,Poly) and isinstance(b, Circle):
+    elif isinstance(a, Poly) and isinstance(b, Circle):
         return test_poly_circle(a, b, response)
-    elif isinstance(a,Circle) and isinstance(b, Poly):
+    elif isinstance(a, Circle) and isinstance(b, Poly):
         return test_circle_poly(a, b, response)
-    elif isinstance(a,Concave_Poly) and isinstance(b,Concave_Poly):
+    elif isinstance(a, Concave_Poly) and isinstance(b, Concave_Poly):
         return test_concave_poly_concave_poly(a, b)
-    elif isinstance(a,Concave_Poly) and isinstance(b,Poly):
+    elif isinstance(a, Concave_Poly) and isinstance(b, Poly):
         return test_concave_poly_poly(a, b)
-    elif isinstance(a,Poly) and isinstance(b,Concave_Poly):
+    elif isinstance(a, Poly) and isinstance(b, Concave_Poly):
         return test_concave_poly_poly(b, a)
-    elif isinstance(a,Concave_Poly) and isinstance(b,Circle):
+    elif isinstance(a, Concave_Poly) and isinstance(b, Circle):
         return test_concave_poly_circle(a, b)
-    elif isinstance(a,Circle) and isinstance(b,Concave_Poly):
+    elif isinstance(a, Circle) and isinstance(b, Concave_Poly):
         return test_concave_poly_circle(b, a)
     else:
         raise TypeError("Invalid types for collide {}() and {}()".format(a.__class__.__name__,b.__class__.__name__))

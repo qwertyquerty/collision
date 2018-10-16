@@ -16,7 +16,7 @@ Or to get the latest development version:
 
 ## Classes
 
-### ***class*** `collision.vec(x, y)`
+### ***class*** `collision.Vector(x, y)`
 
 A 2D vector/point class
 
