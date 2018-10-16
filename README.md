@@ -6,7 +6,7 @@
 
 ## Info
 
-Collision is a python library meant for collision detection between convex polygons, circles, and points.
+Collision is a python library meant for collision detection between convex and concave polygons, circles, and points.
 
 ### Insallation
 
