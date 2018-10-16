@@ -36,8 +36,8 @@ while 1:
         p1c = (255,0,0)
         p0c = (255,0,0)
 
-    pg.draw.polygon(screen, p0c, p0.abs_points, 3)
-    pg.draw.polygon(screen, p1c, p1.abs_points, 3)
+    pg.draw.polygon(screen, p0c, p0.points, 3)
+    pg.draw.polygon(screen, p1c, p1.points, 3)
     pg.draw.circle(screen, cc, c.pos, int(c.radius), 3)
     pg.display.flip()
 

@@ -1,5 +1,7 @@
 from .util import vec
 
+# This is my edit of the tripy lib. Changed to support my vectors, and some other additions. - qwerty
+
 import math
 TWO_PI = 2 * math.pi
 PI = math.pi

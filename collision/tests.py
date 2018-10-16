@@ -53,7 +53,7 @@ def test_circle_circle(a, b, response = None):
         response.overlap = total_radius - dist
         if difference_v.ln2() != 0:
             response.overlap_n = difference_v.normalize()
-            response.overlap_v = difference_v * response.overlap
+            response.overlap_v = response.overlap_n * response.overlap
         else:
             response.overlap_n = vec(0,1)
             response.overlap_v = vec(0,response.overlap)

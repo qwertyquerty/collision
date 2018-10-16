@@ -90,6 +90,10 @@ class vec():
     def reverse(self):
         return vec(-self.x, -self.y)
 
+
+    def int(self):
+        return vec(int(self.x), int(self.y))
+
     def normalize(self):
         d = self.ln()
         return self/d
