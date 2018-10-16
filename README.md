@@ -186,7 +186,7 @@ Get the centroid of the polygon. The arithmatic mean of all of the points.
 
 ### ***class*** `collision.Response()`
 
-The result of a collision between two objects. May optionally be passed to collision tests to retrieve additional information. At its cleared state, it may seem to have odd values. Ignore these, they are just there to make generating the response more efficient. The response should be ignored unless there is a sucessful collision.
+The result of a collision between two objects. May optionally be passed to collision tests to retrieve additional information. At its cleared state, it may seem to have odd values. Ignore these, they are just there to make generating the response more efficient. The response should be ignored unless there is a successful collision.
 
 **Properties:**
 
