@@ -1,6 +1,6 @@
 import math
 from numbers import Real
-from typing import Union
+from typing import Any, Union
 
 
 LEFT_VORONOI_REGION = -1
@@ -14,19 +14,19 @@ class Vector:
         self.x = x
         self.y = y
 
-    def __add__(self, other):
+    def __add__(self, other: Any):
         if isinstance(other, ALLOWED_NUM_TYPES):
             return Vector(self.x+other, self.y+other)
 
         return Vector(self.x+other.x, self.y+other.y)
 
-    def __mul__(self, other):
+    def __mul__(self, other: Any):
         if isinstance(other, ALLOWED_NUM_TYPES):
             return Vector(self.x*other, self.y*other)
 
         return Vector(self.x*other.x, self.y*other.y)
 
-    def __sub__(self, other):
+    def __sub__(self, other: Any):
         if isinstance(other, ALLOWED_NUM_TYPES):
             return Vector(self.x-other,self.y-other)
 
@@ -35,36 +35,36 @@ class Vector:
     def __neg__(self):
         return Vector(-self.x, -self.y)
 
-    def __truediv__(self, other):
+    def __truediv__(self, other: Any):
         if isinstance(other, ALLOWED_NUM_TYPES):
             return Vector(self.x/other, self.y/other)
 
         return Vector(self.x/other.x, self.y/other.y)
 
-    def __floordiv__(self, other):
+    def __floordiv__(self, other: Any):
         if isinstance(other, ALLOWED_NUM_TYPES):
             return Vector(self.x//other, self.y//other)
 
         return Vector(self.x//other.x, self.y//other.y)
 
-    def __mod__(self, other):
+    def __mod__(self, other: Any):
         if isinstance(other, ALLOWED_NUM_TYPES):
             return Vector(self.x % other, self.y % other)
 
         return Vector(self.x % other.x, self.y % other.y)
 
-    def __eq__(self, other):
+    def __eq__(self, other: Any):
         if not isinstance(other, Vector):
             return False
         return self.x == other.x and self.y == other.y
 
-    def __ne__(self, other):
+    def __ne__(self, other: Any):
         if not isinstance(other, Vector):
             return True
 
         return self.x != other.x or self.y != other.y
 
-    def __getitem__(self, index):
+    def __getitem__(self, index: int):
         return [self.x, self.y][index]
 
     def __contains__(self, value):
