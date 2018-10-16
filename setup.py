@@ -7,7 +7,7 @@ with open('README.md') as f:
 # https://setuptools.readthedocs.io/en/latest/setuptools.html
 setup(name='collision',
       author='qwertyquerty',
-      url='https://github.com/qwertyquerty/collision',
+      url='https://github.com/QwekoDev/collision/',
       version='1.0.0',
       packages=['collision'],
       python_requires='>=2.7',
