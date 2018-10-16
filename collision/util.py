@@ -10,6 +10,8 @@ ALLOWED_NUM_TYPES = (int, float)
 
 
 class Vector:
+    __slots__ = ['x', 'y']
+    
     def __init__(self, x, y):
         self.x = x
         self.y = y
@@ -28,9 +30,9 @@ class Vector:
 
     def __sub__(self, other: Any):
         if isinstance(other, ALLOWED_NUM_TYPES):
-            return Vector(self.x-other,self.y-other)
+            return Vector(self.x-other, self.y-other)
 
-        return Vector(self.x-other.x,self.y-other.y)
+        return Vector(self.x-other.x, self.y-other.y)
 
     def __neg__(self):
         return Vector(-self.x, -self.y)
