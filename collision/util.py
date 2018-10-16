@@ -1,4 +1,6 @@
 import math
+from numbers import Real
+from typing import Union
 
 
 LEFT_VORONOI_REGION = -1
@@ -87,7 +89,7 @@ class Vector:
     def perp(self):
         return Vector(self.y, -self.x)
 
-    def rotate(self,angle):
+    def rotate(self, angle: Union[int, float, Real]):
         return Vector(self.x * math.cos(angle) - self.y * math.sin(angle), self.x * math.sin(angle) + self.y * math.cos(angle))
 
     def reverse(self):
@@ -100,7 +102,7 @@ class Vector:
         dot = self.ln()
         return self / dot
 
-    def project(self,other):
+    def project(self, other):
         amt = self.dot(other) / other.ln2()
 
         return Vector(amt * other.x,  amt * other.y)
