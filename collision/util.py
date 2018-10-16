@@ -3,7 +3,8 @@ import math
 
 LEFT_VORONOI_REGION = -1
 MIDDLE_VORONOI_REGION = 0
-RIGHT_VORONOI_REGION  = 1
+RIGHT_VORONOI_REGION = 1
+ALLOWED_NUM_TYPES = (int, float)
 
 
 class Vector:
@@ -12,19 +13,19 @@ class Vector:
         self.y = y
 
     def __add__(self, other):
-        if isinstance(other, int) or isinstance(other,float):
+        if isinstance(other, ALLOWED_NUM_TYPES):
             return Vector(self.x+other, self.y+other)
 
         return Vector(self.x+other.x, self.y+other.y)
 
     def __mul__(self, other):
-        if isinstance(other, int) or isinstance(other,float):
+        if isinstance(other, ALLOWED_NUM_TYPES):
             return Vector(self.x*other, self.y*other)
 
         return Vector(self.x*other.x, self.y*other.y)
 
     def __sub__(self, other):
-        if isinstance(other, int) or isinstance(other,float):
+        if isinstance(other, ALLOWED_NUM_TYPES):
             return Vector(self.x-other,self.y-other)
 
         return Vector(self.x-other.x,self.y-other.y)
@@ -33,31 +34,32 @@ class Vector:
         return Vector(-self.x, -self.y)
 
     def __truediv__(self, other):
-        if isinstance(other, int) or isinstance(other,float):
-            return Vector(self.x/other,self.y/other)
+        if isinstance(other, ALLOWED_NUM_TYPES):
+            return Vector(self.x/other, self.y/other)
 
-        return Vector(self.x/other.x,self.y/other.y)
+        return Vector(self.x/other.x, self.y/other.y)
 
     def __floordiv__(self, other):
-        if isinstance(other, int) or isinstance(other,float):
-            return Vector(self.x//other,self.y//other)
+        if isinstance(other, ALLOWED_NUM_TYPES):
+            return Vector(self.x//other, self.y//other)
 
-        return Vector(self.x//other.x,self.y//other.y)
+        return Vector(self.x//other.x, self.y//other.y)
 
     def __mod__(self, other):
-        if isinstance(other, int) or isinstance(other,float):
-            return Vector(self.x%other,self.y%other)
+        if isinstance(other, ALLOWED_NUM_TYPES):
+            return Vector(self.x % other, self.y % other)
 
-        return Vector(self.x%other.x,self.y%other.y)
+        return Vector(self.x % other.x, self.y % other.y)
 
     def __eq__(self, other):
-        if type(other) != vec:
+        if not isinstance(other, Vector):
             return False
         return self.x == other.x and self.y == other.y
 
     def __ne__(self, other):
-        if type(other) != vec:
+        if not isinstance(other, Vector):
             return True
+
         return self.x != other.x or self.y != other.y
 
     def __getitem__(self, index):
@@ -71,11 +73,12 @@ class Vector:
 
     def __repr__(self):
         return self.__str__()
+
     def __str__(self):
-        return "vec [{x}, {y}]".format(x=self.x, y=self.y)
+        return "Vector [{x}, {y}]".format(x=self.x, y=self.y)
 
     def copy(self):
-        return Vector(self.x,self.y)
+        return Vector(self.x, self.y)
 
     def set(self, other):
         self.x = other.x
@@ -90,40 +93,38 @@ class Vector:
     def reverse(self):
         return Vector(-self.x, -self.y)
 
-
     def int(self):
         return Vector(int(self.x), int(self.y))
 
     def normalize(self):
-        d = self.ln()
-        return self/d
+        dot = self.ln()
+        return self / dot
 
     def project(self,other):
         amt = self.dot(other) / other.ln2()
 
         return Vector(amt * other.x,  amt * other.y)
 
-    def project_n(self,other):
+    def project_n(self, other):
         amt = self.dot(other)
 
         return Vector(amt * other.x, amt * other.y)
 
-
-    def reflect(self,axis):
-        v = Vector(self.x,self.y)
+    def reflect(self, axis):
+        v = Vector(self.x, self.y)
         v = v.project(axis) * 2
         v = -v
 
         return v
 
-    def reflect_n(self,axis):
+    def reflect_n(self, axis):
         v = Vector(self.x, self.y)
         v = v.project_n(axis) * 2
         v = -v
 
         return v
 
-    def dot(self,other):
+    def dot(self, other):
         return self.x * other.x + self.y * other.y
 
     def ln2(self):
@@ -132,21 +133,25 @@ class Vector:
     def ln(self):
         return math.sqrt(self.ln2())
 
+
 def flatten_points_on(points, normal, result):
-    min = math.inf
-    max = -math.inf
+    minpoint = math.inf
+    maxpoint = -math.inf
+
     for i in range(len(points)):
         dot = points[i].dot(normal)
-        if dot < min: min = dot
-        if dot > max: max = dot
+        if dot < minpoint:
+            minpoint = dot
+        if dot > maxpoint:
+            maxpoint = dot
 
-    result[0] = min
-    result[1] = max
+    result[0] = minpoint
+    result[1] = maxpoint
 
 
-def is_separating_axis(a_pos,b_pos,a_points,b_points,axis,response = None):
-    range_a = [0,0]
-    range_b = [0,0]
+def is_separating_axis(a_pos, b_pos, a_points, b_points, axis, response=None):
+    range_a = [0, 0]
+    range_b = [0, 0]
 
     offset_v = b_pos-a_pos
 
@@ -174,7 +179,7 @@ def is_separating_axis(a_pos,b_pos,a_points,b_points,axis,response = None):
             else:
                 option_1 = range_a[1] - range_b[1]
                 option_2 = range_b[1] - range_a[1]
-                operlap = option_1 if option_1 < option_2 else option_2
+                overlap = option_1 if option_1 < option_2 else option_2
 
         else:
             response.b_in_a = False
@@ -198,7 +203,8 @@ def is_separating_axis(a_pos,b_pos,a_points,b_points,axis,response = None):
 
     return False
 
-def voronoi_region(line,point):
+
+def voronoi_region(line, point):
     dp = point.dot(line)
 
     if dp < 0:
