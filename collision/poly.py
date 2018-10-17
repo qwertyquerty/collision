@@ -8,7 +8,7 @@ POLY_RECALC_ATTRS = ["angle"]
 
 class Poly:
     def __init__(self, pos, points, angle=0):
-        self.__dict__["pos"] = pos
+        self.pos = pos
         self.__dict__["angle"] = angle
         self.set_points(points)
 
@@ -58,30 +58,28 @@ class Poly:
 
             self.normals[i] = e.perp().normalize()
 
+
     @property
     def points(self):
-        templist = []
-        for p in self.rel_points:
-            templist.append(p+self.pos)
-        return templist
+        pos = self.pos
+        return [pos+point for point in self.rel_points]
 
+    @property
     def aabb(self):
-        x_min = self.rel_points[0].x
-        y_min = self.rel_points[0].y
-        x_max = self.rel_points[0].x
-        y_max = self.rel_points[0].y
+        points = self.points
+        x_min = points[0].x
+        y_min = points[0].y
+        x_max = points[0].x
+        y_max = points[0].y
 
-        for point in self.rel_points:
-            if point.x < x_min:
-                x_min = point.x
-            elif point.x > x_max:
-                x_max = point.x
-            if point.y < y_min:
-                y_min = point.y
-            elif point.y > y_max:
-                y_max = point.y
+        for point in points:
+            if point.x < x_min: x_min = point.x
+            elif point.x > x_max: x_max = point.x
+            if point.y < y_min: y_min = point.y
+            elif point.y > y_max: y_max = point.y
 
-        return Poly.from_box(Vector((x_min+x_max)/2, (y_min+y_max)/2), x_max- x_min, y_max - y_min)
+        return ((x_min,y_min), (x_max,y_min), (x_min,y_max), (x_max,y_max))
+
 
     def get_centroid(self):
         cx = 0
@@ -116,7 +114,7 @@ class Poly:
 
 class Concave_Poly():
     def __init__(self, pos, points, angle=0):
-        self.__dict__["pos"] = pos
+        self.pos = pos
         self.__dict__["angle"] = angle
         self.set_points(points)
 
@@ -124,8 +122,6 @@ class Concave_Poly():
         self.__dict__[key] = val
         if key in POLY_RECALC_ATTRS:
             self._recalc()
-        elif key == "pos":
-            self._update_tris()
 
     def set_points(self, points):
         if tripy.is_clockwise(points):
@@ -180,19 +176,23 @@ class Concave_Poly():
             templist.append(p+self.pos)
         return templist
 
+    @property
     def aabb(self):
-        x_min = self.rel_points[0].x
-        y_min = self.rel_points[0].y
-        x_max = self.rel_points[0].x
-        y_max = self.rel_points[0].y
+        points = self.points
+        x_min = points[0].x
+        y_min = points[0].y
+        x_max = points[0].x
+        y_max = points[0].y
 
-        for point in self.rel_points:
+        for point in points:
             if point.x < x_min: x_min = point.x
             elif point.x > x_max: x_max = point.x
             if point.y < y_min: y_min = point.y
             elif point.y > y_max: y_max = point.y
 
-        return Poly.from_box(Vector((x_min+x_max)/2, (y_min+y_max)/2), x_max - x_min, y_max - y_min)
+        return ((x_min,y_min), (x_max,y_min), (x_min,y_max), (x_max,y_max))
+
+
 
     def get_centroid(self):
         cx = 0

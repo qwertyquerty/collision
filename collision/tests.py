@@ -13,6 +13,9 @@ RESPONSE = Response()
 TEST_POINT = Poly(Vector(0, 0), [Vector(0, 0), Vector(0.0000001, 0.0000001)])
 
 
+def test_aabb(b1,b2):
+    return b1[0][0] <= b2[1][0] and b2[0][0] <= b1[1][0] and b1[0][1] <= b2[2][1] and b2[0][1] <= b1[2][1]
+
 def point_in_circle(p, c):
     difference_v = p - c.pos
 
@@ -297,10 +300,15 @@ def test_concave_poly_circle(concave_poly, circle):
 
 
 def collide(a, b, response=None):
+    if isinstance(a, Circle) and isinstance(b, Circle):
+        return test_circle_circle(a, b, response)
+
+    if not test_aabb(a.aabb, b.aabb):
+        return False
+
+
     if isinstance(a, Poly) and isinstance(b, Poly):
         return test_poly_poly(a, b, response)
-    elif isinstance(a, Circle) and isinstance(b, Circle):
-        return test_circle_circle(a, b, response)
     elif isinstance(a, Poly) and isinstance(b, Circle):
         return test_poly_circle(a, b, response)
     elif isinstance(a, Circle) and isinstance(b, Poly):

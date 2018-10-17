@@ -11,6 +11,7 @@ from .response import Response
 from .tests import *
 from .tripy import *
 from .util import Vector
+from .bounding_box import Bounding_Box
 
 
 __title__ = 'collision'
