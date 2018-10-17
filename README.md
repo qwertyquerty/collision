@@ -192,7 +192,7 @@ Test two shapes against each other. If a response is passed, and there is a coll
 - `b` *(collision shape)* - The second shape to test
 - `response` *(collision.Response)* - Optional response that will be updated if there is a collision.
 
-### *func* test_aabb(a, b) &rarr; `bool`
+### *func* `test_aabb(a, b)` &rarr; `bool`
 
 Test two axis aligned bounding boxes against each other. This is already done in `collision.collide` so there is no need for you to do it for optimization.
 
