@@ -8,7 +8,7 @@ with open('README.md') as f:
 setup(name='collision',
       author='qwertyquerty',
       url='https://github.com/QwekoDev/collision/',
-      version='1.1.0',
+      version='1.1.1',
       packages=['collision'],
       python_requires='>=2.7',
       platforms=['Windows', 'Linux', 'OSX'],
