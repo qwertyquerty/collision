@@ -99,14 +99,7 @@ A simple circle with a position and radius
 
 - `pos` *(collision.vec)* - The center coordinate of the circle
 - `radius` *(int) or (float)* - The radius of the circle
-
-**Methods:**
-
-##### *func* `get_aabb()` &rarr; `collision.Poly`
-
-Returns the AABB bounding box of the circle
-
-------
+- `aabb` *(tuple(tuple(int or float))* - The axis alligned bounding box of the circle
 
 ### ***class*** `collision.Poly(pos, points, angle = 0)`
 
@@ -118,6 +111,7 @@ A **convex** polygon with a position, a list of points relative to that position
 - `points` *(list[collision.vec])* - A list of absolute points (each relative point + the position of the polygon.) Can not be directly edited.
 - `rel_points` *(list[collision.vec])* - A list of points relative to the position. This property should not be directly changed.
 - `angle` *(int) or (float)* - The angle which the polygon is rotated. Changing this will cause the polygon to be recalculated.
+- `aabb` *(tuple(tuple(int or float))* - The axis alligned bounding box of the Poly
 
 **Class Methods:**
 
@@ -130,10 +124,6 @@ Creates a polygon from
 - `height` *(int) or (float)* - The height of the box
 
 **Methods:**
-
-##### *func* `aabb()` &rarr; `collision.Poly`
-
-Returns the AABB bounding box of the polygon
 
 ##### *func* `set_points(points)`
 
@@ -157,13 +147,9 @@ A **concave** polygon with a position, a list of points relative to that positio
 - `rel_points` *(list[collision.vec])* - A list of points relative to the position. This property should not be directly changed.
 - `tris` *(list[collision.Poly])* - A list of triangles relative to the position on the poly that make up the concave polygon. Used for concave collisions.
 - `angle` *(int) or (float)* - The angle which the polygon is rotated. Changing this will cause the polygon to be recalculated.
-
+- `aabb` *(tuple(tuple(int or float))* - The axis alligned bounding box of the Poly
 
 **Methods:**
-
-##### *func* `aabb()` &rarr; `collision.Concave_Poly`
-
-Returns the AABB bounding box of the polygon
 
 ##### *func* `set_points(points)`
 
@@ -192,8 +178,23 @@ The result of a collision between two objects. May optionally be passed to colli
 
 **Methods:**
 
-##### *func* `clear()` &rarr; `collision.Response`
+##### *func* `reset()` &rarr; `collision.Response`
 
-Clears the Response for re-use, and returns itself
+Reset the Response for re-use, and returns itself
 
-# To be finished
+## Collisions
+
+### *func* `collision.collide(a, b, response = None)` &rarr; `bool`
+
+Test two shapes against each other. If a response is passed, and there is a collision, that response will be updated to the response values. **The response will not be generated if there is no collision and it will be at it's default values.**
+
+- `a` *(collision shape)* - The first shape to test
+- `b` *(collision shape)* - The second shape to test
+- `response` *(collision.Response)* - Optional response that will be updated if there is a collision.
+
+### *func* test_aabb(a, b) &rarr; `bool`
+
+Test two axis aligned bounding boxes against each other. This is already done in `collision.collide` so there is no need for you to do it for optimization.
+
+- `a` *(tuple(tuple(int or float)))* The first AABB
+- `b` *(tuple(tuple(int or float)))* The second AABB
