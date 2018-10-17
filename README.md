@@ -6,11 +6,7 @@ Collision is a python library meant for collision detection between convex and c
 
 ### Insallation
 
-To get the latest stable version:
-
-`pip install collision`
-
-Or to get the latest development version:
+To get the latest development version:
 
 `pip install https://github.com/QwekoDev/collision/archive/master.zip`
 
