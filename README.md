@@ -1,5 +1,6 @@
 # collision.py
-![logo](./logo.svg =100x100)
+
+<img src="./logo.svg" alt="logo" width="200px" height="200px">
 
 ## Info
 
