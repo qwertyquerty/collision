@@ -1,4 +1,5 @@
 # collision.py
+![https://raw.githubusercontent.com/QwekoDev/collision/master/logo.svg](https://raw.githubusercontent.com/QwekoDev/collision/master/logo.svg)
 
 ## Info
 
