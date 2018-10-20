@@ -192,7 +192,7 @@ Reset the Response for re-use, and returns itself
 
 ### *func* `collision.collide(a, b, response = None)` &rarr; `bool`
 
-Test two shapes against each other. If a response is passed, and there is a collision, that response will be updated to the response values. **The response will not be generated if there is no collision and it will be at it's default values.**
+Test two shapes against each other. If a response is passed, and there is a collision, that response will be updated to the response values. **The response will not be generated if there is no collision and it will be at it's default values. Concave polys currently do not support responses.** 
 
 - `a` *(collision shape)* - The first shape to test
 - `b` *(collision shape)* - The second shape to test
