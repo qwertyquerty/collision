@@ -199,7 +199,7 @@ def is_separating_axis(a_pos, b_pos, a_points, b_points, axis, response=None):
                 overlap = option_1 if option_1 < option_2 else option_2
 
         abs_overlap = abs(overlap)
-        if abs_overlap < response.overlap:
+        if abs_overlap > 0 and abs_overlap < response.overlap:
             response.overlap = abs_overlap
             response.overlap_n.set(axis)
             if overlap < 0:
