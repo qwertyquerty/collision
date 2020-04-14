@@ -14,7 +14,7 @@ To get the latest stable version:
 
 To get the latest development version:
 
-`pip install https://github.com/QwekoDev/collision/archive/master.zip`
+`pip install https://github.com/qwertyquerty/collision/archive/master.zip`
 
 ## Classes
 
