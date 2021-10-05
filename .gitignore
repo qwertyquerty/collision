@@ -7,3 +7,4 @@ test5.py
 /__pycache__/
 /collision/__pycache__/
 collision.egg-info
+build
