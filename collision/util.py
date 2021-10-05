@@ -178,12 +178,13 @@ def is_separating_axis(a_pos, b_pos, a_points, b_points, axis, response=None):
             response.a_in_b = False
 
             if range_a[1] < range_b[1]:
+                overlap = range_a[1] - range_b[0]
                 response.b_in_a = False
 
             else:
-                option_1 = range_a[1] - range_b[1]
-                option_2 = range_b[1] - range_a[1]
-                overlap = option_1 if option_1 < option_2 else option_2
+                option_1 = range_a[1] - range_b[0]
+                option_2 = range_b[1] - range_a[0]
+                overlap = option_1 if option_1 < option_2 else -option_2
 
         else:
             response.b_in_a = False
@@ -196,7 +197,7 @@ def is_separating_axis(a_pos, b_pos, a_points, b_points, axis, response=None):
                 option_1 = range_a[1] - range_b[0]
                 option_2 = range_b[1] - range_a[0]
 
-                overlap = option_1 if option_1 < option_2 else option_2
+                overlap = option_1 if option_1 < option_2 else -option_2
 
         abs_overlap = abs(overlap)
         if abs_overlap < response.overlap:
