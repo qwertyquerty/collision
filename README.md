@@ -113,7 +113,7 @@ A **convex** polygon with a position, a list of points relative to that position
 
 **Properties:**
 
-- `pos` *(collision.vec)* - The center coordinate of the circle
+- `pos` *(collision.vec)* - The center coordinate of the polygon
 - `points` *(list[collision.vec])* - A list of absolute points (each relative point + the position of the polygon.) Can not be directly edited.
 - `rel_points` *(list[collision.vec])* - A list of points relative to the position. This property should not be directly changed.
 - `angle` *(int) or (float)* - The angle which the polygon is rotated. Changing this will cause the polygon to be recalculated.
