@@ -6,7 +6,7 @@
 
 Collision is a python library meant for collision detection between convex and concave polygons, circles, and points.
 
-### Insallation
+### Installation
 
 To get the latest stable version:
 
@@ -41,7 +41,7 @@ Copy another vectors values onto the vector
 
 ##### *func* `perp()` &rarr; `collision.vec`
 
-Return the vector rotated perpandicularly
+Return the vector rotated perpendicularly
 
 ##### *func* `rotate(angle)` &rarr; `collision.vec`
 
@@ -105,7 +105,7 @@ A simple circle with a position and radius
 
 - `pos` *(collision.vec)* - The center coordinate of the circle
 - `radius` *(int) or (float)* - The radius of the circle
-- `aabb` *(tuple(tuple(int or float))* - The axis alligned bounding box of the circle
+- `aabb` *(tuple(tuple(int or float))* - The axis aligned bounding box of the circle
 
 ### ***class*** `collision.Poly(pos, points, angle = 0)`
 
@@ -117,7 +117,7 @@ A **convex** polygon with a position, a list of points relative to that position
 - `points` *(list[collision.vec])* - A list of absolute points (each relative point + the position of the polygon.) Can not be directly edited.
 - `rel_points` *(list[collision.vec])* - A list of points relative to the position. This property should not be directly changed.
 - `angle` *(int) or (float)* - The angle which the polygon is rotated. Changing this will cause the polygon to be recalculated.
-- `aabb` *(tuple(tuple(int or float))* - The axis alligned bounding box of the Poly
+- `aabb` *(tuple(tuple(int or float))* - The axis aligned bounding box of the Poly
 
 **Class Methods:**
 
@@ -137,7 +137,7 @@ Change the base points relative to the position. After this is done, the polygon
 
 ##### *func* `get_centroid()` &rarr; `collision.vec`
 
-Get the centroid of the polygon. The arithmatic mean of all of the points.
+Get the centroid of the polygon. The arithmetic mean of all of the points.
 
 
 ------
@@ -153,7 +153,7 @@ A **concave** polygon with a position, a list of points relative to that positio
 - `rel_points` *(list[collision.vec])* - A list of points relative to the position. This property should not be directly changed.
 - `tris` *(list[collision.Poly])* - A list of triangles relative to the position on the poly that make up the concave polygon. Used for concave collisions.
 - `angle` *(int) or (float)* - The angle which the polygon is rotated. Changing this will cause the polygon to be recalculated.
-- `aabb` *(tuple(tuple(int or float))* - The axis alligned bounding box of the Poly
+- `aabb` *(tuple(tuple(int or float))* - The axis aligned bounding box of the Poly
 
 **Methods:**
 
@@ -163,7 +163,7 @@ Change the base points relative to the position. After this is done, the polygon
 
 ##### *func* `get_centroid()` &rarr; `collision.vec`
 
-Get the centroid of the polygon. The arithmatic mean of all of the points.
+Get the centroid of the polygon. The arithmetic mean of all of the points.
 
 
 ------
