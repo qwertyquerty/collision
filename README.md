@@ -1,18 +1,14 @@
-# collision.py
-
-<img src="./logo.svg" alt="logo" width="200px" height="200px">
-
 ## Info
 
-Collision is a python library meant for collision detection between convex and concave polygons, circles, and points.
+Collision is a python library that is meant for collision detection between convex and concave polygons, circles, and points.
 
-### Insallation
+### Installation
 
 To get the latest stable version:
 
 `pip install collision`
 
-To get the latest development version:
+To get the latest development version run:
 
 `pip install https://github.com/qwertyquerty/collision/archive/master.zip`
 
@@ -35,17 +31,17 @@ Return a copy of the vector
 
 ##### *func* `set(v)`
 
-Copy another vectors values onto the vector
+Copy another vector's values onto the target vector
 
 - `v` *(collision.vec)* - The vector to copy from
 
 ##### *func* `perp()` &rarr; `collision.vec`
 
-Return the vector rotated perpandicularly
+Return the vector rotated perpendicularly
 
 ##### *func* `rotate(angle)` &rarr; `collision.vec`
 
-Return the vector rotated the angle
+Return the vector rotated to the angle
 
 - `angle` *(int) or (float)* - Radians to rotate the point
 
@@ -117,7 +113,7 @@ A **convex** polygon with a position, a list of points relative to that position
 - `points` *(list[collision.vec])* - A list of absolute points (each relative point + the position of the polygon.) Can not be directly edited.
 - `rel_points` *(list[collision.vec])* - A list of points relative to the position. This property should not be directly changed.
 - `angle` *(int) or (float)* - The angle which the polygon is rotated. Changing this will cause the polygon to be recalculated.
-- `aabb` *(tuple(tuple(int or float))* - The axis alligned bounding box of the Poly
+- `aabb` *(tuple(tuple(int or float))* - The axis-aligned bounding box of the Poly
 
 **Class Methods:**
 
@@ -133,25 +129,25 @@ Creates a polygon from
 
 ##### *func* `set_points(points)`
 
-Change the base points relative to the position. After this is done, the polygon will be recalculated again. Angle will be preserved. Use this instead of editing the `points` property.
+Change the base points relative to the position. After this is done, the polygon will be recalculated again. The angle will be preserved. Use this instead of editing the `points` property.
 
 ##### *func* `get_centroid()` &rarr; `collision.vec`
 
-Get the centroid of the polygon. The arithmatic mean of all of the points.
+Get the centroid of the polygon. Arithmetic means all of the points.
 
 
 ------
 
 ### ***class*** `collision.Concave_Poly(pos, points, angle = 0)`
 
-A **concave** polygon with a position, a list of points relative to that position, and an angle. This takes longer to collide than a regular `Poly` does, so only use this if your shape must be concave.
+A **concave** polygon with a position, a list of points relative to that position, and an angle. This takes longer to collide than a regular `Poly` does, so only use this, if your shape must be concave.
 
 **Properties:**
 
 - `pos` *(collision.vec)* - The center coordinate of the circle
 - `points` *(list[collision.vec])* - A list of absolute points (each relative point + the position of the polygon.) Can not be directly edited.
 - `rel_points` *(list[collision.vec])* - A list of points relative to the position. This property should not be directly changed.
-- `tris` *(list[collision.Poly])* - A list of triangles relative to the position on the poly that make up the concave polygon. Used for concave collisions.
+- `tris` *(list[collision.Poly])* - A list of triangles relative to the position on the poly that makes up the concave polygon is used for concave collisions.
 - `angle` *(int) or (float)* - The angle which the polygon is rotated. Changing this will cause the polygon to be recalculated.
 - `aabb` *(tuple(tuple(int or float))* - The axis alligned bounding box of the Poly
 
@@ -159,18 +155,18 @@ A **concave** polygon with a position, a list of points relative to that positio
 
 ##### *func* `set_points(points)`
 
-Change the base points relative to the position. After this is done, the polygon will be recalculated again. Angle will be preserved. Use this instead of editing the `points` property.
+Change the base points relative to the position. After this is done, the polygon will be recalculated again. The angle will be preserved. Use this instead of editing the `points` property.
 
 ##### *func* `get_centroid()` &rarr; `collision.vec`
 
-Get the centroid of the polygon. The arithmatic mean of all of the points.
+Get the centroid of the polygon. Arithmetic means all of the points.
 
 
 ------
 
 ### ***class*** `collision.Response()`
 
-The result of a collision between two objects. May optionally be passed to collision tests to retrieve additional information. At its cleared state, it may seem to have odd values. Ignore these, they are just there to make generating the response more efficient. The response should be ignored unless there is a successful collision.
+The result of a collision between two objects. It may optionally be passed to collision tests to retrieve additional information. At its cleared state, it may seem to have odd values. Ignore these, they are just there to make generating the response more efficient. The response should be ignored unless there is a successful collision.
 
 **Properties:**
 
@@ -192,15 +188,15 @@ Reset the Response for re-use, and returns itself
 
 ### *func* `collision.collide(a, b, response = None)` &rarr; `bool`
 
-Test two shapes against each other. If a response is passed, and there is a collision, that response will be updated to the response values. **The response will not be generated if there is no collision and it will be at it's default values. Concave polys currently do not support responses.** 
+Test two shapes against each other. If a response is passed, and there is a collision, that response will be updated to the response values. **The response will not be generated if there is no collision and it will be at its default values. Concave polys currently do not support responses.** 
 
 - `a` *(collision shape)* - The first shape to test
 - `b` *(collision shape)* - The second shape to test
-- `response` *(collision.Response)* - Optional response that will be updated if there is a collision.
+- `response` *(collision.Response)* - Optional response that will be updated if there's a collision.
 
 ### *func* `collision.test_aabb(a, b)` &rarr; `bool`
 
-Test two axis aligned bounding boxes against each other. This is already done in `collision.collide` so there is no need for you to do it for optimization.
+Test two axis-aligned bounding boxes against each other. This is already done in `collision.collide` so there's no need for you to do it for optimization.
 
 - `a` *(tuple(tuple(int or float)))* The first AABB
 - `b` *(tuple(tuple(int or float)))* The second AABB
